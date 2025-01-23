@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:100,300italic,700,900' rel='stylesheet' type='text/css'>
+
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900' rel='stylesheet' type='text/css'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.3/animate.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <title>Tic-Tac-Toe</title>
+
+
+    <style>
+        body {
+            background-color: #6795C2;
+        }
+
+        .nav-wrapper {
+            background-color: #083968;
+        }
+
+        #board {
+            width: 90vw;
+            height: 90vw;
+            min-width: 300px;
+            min-height: 300px;
+            max-width: 600px;
+            max-height: 600px;
+            background-color: rgba(64, 116, 167,1);
+            box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.32), 0 3px 12px 0 rgba(0, 0, 0, 0.24);
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #score-board {
+            min-width: 300px;
+            max-width: 600px;
+            margin-top: 30px;
+        }
+
+        .score {
+            font-size: 1.7em;
+            color: #bbdefb;
+        }
+
+        .bluetext {
+            color: rgba(64, 116, 167,1);
+        }
+
+        .icon-color{
+            color: rgba(64, 116, 167,1);
+        }
+
+        .portrait {
+            width: 200%;
+            height: auto;
+        }
+
+        .person {
+            font-size: 1.5em;
+            color: white;
+            text-align: center;
+            width: 100%;
+            line-height: 1.5em;
+        }
+
+        .contact {
+            text-align: center;
+        }
+
+        .square {
+            display: inline-block;
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+            width: calc(100%/3);
+            height: 100%;
+            background-color: rgba(0,0,0,0.0);
+            border-style: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .who {
+            color: #bbdefb;
+            font-size: 5.5em;
+            margin: 0px;
+            border: 0px;
+            padding: 0px;
+        }
+
+        .row.top,
+        .row.middle {
+            border-bottom: dotted 2px #6795C2;
+        }
+
+        .square.left,
+        .square.middle {
+            border-right: dotted 2px #6795C2;
+        }
+
+
+        #board > .row {
+            height: calc(100%/3);
+            margin: 0px;
+            padding: 0px;
+        }
+
+
+        .choose {
+            text-align: center;
+            font-size: 8em;
+            cursor: pointer;
+            background-color: #eee;
+            color: #555;
+        }
+
+        .choose:hover {
+            background-color: rgba(0,0,0,0.0);
+            color: #000;
+        }
+
+        .modal .modal-content {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .row {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #mobile-menu {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .page-footer {
+            background-color: #083968;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .socials {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 1.5em;
+            transition: color 0.3s ease;
+            margin: 0 10px;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            background-color: transparent;
+            transition: all 0.5s ease;
+        }
+
+        footer {
+            background-color: #083968;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+            padding: 20px;
+            color: white;
+            font-size: 1.2em;
+            margin-top: 50px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-icon:hover {
+            color: #6795C2;
+            transition: color 0.3s ease;
+            text-decoration: none;
+            transform: scale(1.5) rotate(360deg);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        .link {
+            color: white;
+            text-decoration: none;
+        }
+
+        .link:hover {
+            color: #6795C2;
+            transition: color 0.3s ease;
+        }
+
+        .white-text {
+            color: white;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+
+<div class="container">
+
+    <!-- Game Board -->
+    <div id="board" class="container">
+      <div class="row top valign-wrapper">
+        <div class="square left col s4 valign waves-effect waves-light flow-text" id="0"></div>
+        <div class="square middle col s4 valign waves-effect waves-light flow-text" id="1"></div>
+        <div class="square right col s4 valign waves-effect waves-light flow-text" id="2"></div>
+      </div>
+      <div class="row middle valign-wrapper">
+        <div class="square left col s4 valign waves-effect waves-light flow-text" id="3"></div>
+        <div class="square middle col s4 valign waves-effect waves-light flow-text" id="4"></div>
+        <div class="square right col s4 valign waves-effect waves-light flow-text" id="5"></div>
+      </div>
+      <div class="row bottom valign-wrapper">
+        <div class="square left col s4 valign waves-effect waves-light flow-text" id="6"></div>
+        <div class="square middle col s4 valign waves-effect waves-light flow-text" id="7"></div>
+        <div class="square right col s4 valign waves-effect waves-light flow-text" id="8"></div>
+      </div>
+    </div>
+  
+  </div>
+  
+  
+    <!-- Score Board -->
+    <div id="score-board" class="container">
+      <div class="row">
+        <div class="col s12">
+          <div class="card-panel transparent">
+            <span class="bluetext">
+              <div class="row center-align">
+                <div class="col s3">
+                  <span class="flow-text center-align">
+                    <span><i class="fa fa-2x fa-user"></i></span>
+                    <span id="score0" class="score">0</span>
+                  </span>
+                </div>
+                <div class="col s3">
+                  <span class="flow-text center-align">
+                    <i class="fa fa-2x fa-ban"></i>
+                    <span id="score1" class="score">0</span>
+                  </span>
+                </div>
+                <div class="col s3">
+                  <span class="flow-text center-align">
+                    <i class="fa fa-2x fa-laptop"></i>
+                    <span id="score2" class="score">0</span>
+                  </span>
+                </div>
+                <div class="col s3">
+                  <a id="new-game" class="btn-floating btn-large waves-effect waves-light amber darken-4"><i class="medium material-icons">replay</i></a>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Get Player Token Modal -->
+    <div id="chooseModal" class="modal amber darken-4">
+      <div class="modal-content">
+        <div class="row">
+          <div class="choose col s6 waves-effect waves-light" id="X"><i class='fa fa-times'></i></div>
+          <div class="choose col s6 waves-effect waves-light" id="O"><i class='fa fa-circle-o'></i></div>
+        </div>
+      </div>
+    </div>
+  <!-- Create the footer -->
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <p class="white-text">Made with ❤️ by <a href="https://github.com/oumaelvis087" class="link">Elvis Ouma</a></p>
+          <div class="socials">
+            <a href="https://github.com/oumaelvis087" class="social-icon"><i class="fa fa-github"></i></a>
+            <a href="mailto:elvis.ouma@mpesafoundationacademy.ac.ke" class="social-icon"><i class="fa fa-envelope"></i></a>
+            <a href="https://www.linkedin.com/in/elvis-ouma/" class="social-icon"><i class="fa fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+
+
+  <script>
+    $(document).ready(function() {
+
+        // Initialize game variables
+        var squares = [0, 1, 2, 3, 4, 5, 6, 7, 8]; // Array representing the squares on the board
+        var used = [0, 0, 0, 0, 0, 0, 0, 0, 0]; // Array to track used squares
+        var X_token = "<i class='fa fa-times'></i>"; // HTML for X token
+        var O_token = "<i class='fa fa-circle-o'></i>"; // HTML for O token
+        var humanPlayer = X_token; // Current human player token
+        var aiPlayer = O_token; // Current AI player token
+        var empty = 0; // Constant for empty square
+        var human = 1; // Constant for human player
+        var ai = 2; // Constant for AI player
+        var hasMoved = false; // Flag to ceck hif a move has been made
+        var gameOver = false; // Flag to check if the game is over
+        var how = []; // Array to track winning moves
+        var score = [0, 0, 0]; // Array to track scores: [human, AI, tie]
+        var delay; // Variable for delay in animations
+        var move = {}; // Object to store the current move
+        var moveCounter = 0; // Counter for the number of moves made
+        var score_TIE = 1; // Index for tie score
+        var score_HUMAN = 0; // Index for human score
+        var score_AI = 2; // Index for AI score
+        var outcome = null; // Variable to store the outcome of the game
+
+        // Initialize the game board as a 3x3 array
+        var board = [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+        ];
+
+        // Winning combinations
+        var win = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        // Load sound effects for human and AI moves
+        var humanSound = new Audio('audio/water_droplet_3.mp3');
+        var aiSound = new Audio('audio/water_droplet.mp3');
+
+        // Function to reset the game for a new game
+        function setNewGame() {
+            squares.forEach(function(v) {
+                $('#' + v).empty(); // Clear each square
+                $('#' + v).css('background-color', 'rgba(0,0,0,0.0)'); // Reset background color
+            });
+
+            // Reset the board state
+            board = [
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            ];
+            hasMoved = false; // Reset move flag
+            outcome = null; // Reset outcome
+            moveCounter = 0; // Reset move counter
+            gameOver = false; // Reset game over flag
+            how = []; // Reset winning moves
+            move = {}; // Reset current move
+        }
+
+        // Function to play sound effects
+        function playSound(sound) {
+            sound.play(); // Play the provided sound
+        }
+
+        // Function for human player's move
+        function moveHUMAN(here) {
+            if (!(board[here.x][here.y])) { // Check if the square is empty
+                board[here.x][here.y] = human; // Mark the square for the human player
+                // playSound(humanSound); // Uncomment to play sound on human move
+                drawMove(here, humanPlayer, 100); // Draw the move on the board
+                hasMoved = true; // Set move flag to true
+            }
+        }
+
+        // Function for AI's random move
+        function moveAI_Rnd() {
+            var min = Math.min.apply(null, board.reduce(function(a, b) {
+                return a.concat(b);
+            }, [])); // Find the minimum value in the board
+
+            var whereMove = {}; // Object to store AI's move
+
+            if (min === 0) { // Check if there are empty squares
+                while (!(hasMoved)) { // Continue until a move is made
+                    whereMove.x = Math.floor(Math.random() * 3); // Randomly select x coordinate
+                    whereMove.y = Math.floor(Math.random() * 3); // Randomly select y coordinate
+                    if (!(board[whereMove.x][whereMove.y])) { // Check if the square is empty
+                        board[whereMove.x][whereMove.y] = ai; // Mark the square for the AI player
+                        drawMove(whereMove, aiPlayer, 300); // Draw the move on the board
+                        // playSound(aiSound); // Uncomment to play sound on AI move
+                        hasMoved = true; // Set move flag to true
+                    }
+                }
+            }
+        }
+
+        // Function for AI's strategic move based on Wikipedia strategy
+        function moveAI_Wiki() {
+            // Transfer board to used
+            used = [0, 0, 0, 0, 0, 0, 0, 0, 0]; // Reset used array
+            var corner = [0, 2, 6, 8]; // Array of corner positions
+            var side = [1, 3, 5, 7]; // Array of side positions
+            var count = 0; // Counter for used squares
+            var theMove = null; // Variable to store the move
+
+            // Fill the used array with current board state
+            for (var row = 0; row <= 2; row++) {
+                for (var col = 0; col <= 2; col++) {
+                    used[count] = board[row][col]; // Transfer board state to used array
+                    count++;
+                }
+            }
+
+            // Function to execute the move
+            function move() {
+                var whereMove = {};
+                whereMove.x = parseInt(theMove / 3); // Calculate x coordinate
+                whereMove.y = theMove % 3; // Calculate y coordinate
+                board[whereMove.x][whereMove.y] = ai; // Mark the square for the AI player
+                drawMove(whereMove, aiPlayer, 300); // Draw the move on the board
+                hasMoved = true; // Set move flag to true
+                moveCounter++; // Increment move counter
+            }
+
+            // Opening move strategy
+            function opening() {
+                if (theMove === null && (used[1] === human || used[3] === human)) {
+                    theMove = 0; // Choose top-left corner
+                    move(); // Execute the move
+                }
+
+                if (theMove === null && (used[5] === human || used[7] === human)) {
+                    theMove = 8; // Choose bottom-right corner
+                    move(); // Execute the move
+                }
+
+                if (used[4] === human && theMove === null) {
+                    emptyCorner(); // Try to occupy an empty corner
+                    return;
+                }
+
+                if (used[4] === empty && theMove === null && moveCounter === 0 && aiPlayer === X_token) {
+                    theMove = corner[Math.floor(Math.random() * 4)]; // Randomly choose a corner
+                    move(); // Execute the move
+                }
+
+                if (used[4] === empty && theMove === null) {
+                    playCenter(); // Try to occupy the center
+                    return;
+                }
+            }
+
+            // Function to check for a winning move
+            function aWin() {
+                win.forEach(function(solution) {
+                    if ((used[solution[0]] === ai && used[solution[1]] === ai && used[solution[2]] == empty) ||
+                        (used[solution[0]] === ai && used[solution[1]] === empty && used[solution[2]] == ai) ||
+                        (used[solution[0]] === empty && used[solution[1]] === ai && used[solution[2]] == ai)) {
+
+                        solution.forEach(function(pos) {
+                            if (used[pos] === empty && theMove === null) {
+                                theMove = pos; // Set the move to the winning position
+                            }
+                        });
+                        move(); // Execute the winning move
+                    }
+                });
+            }
+
+            // Function to block the human player from winning
+            function block() {
+                if (used[4] === empty && theMove === null) {
+                    playCenter(); // Try to occupy the center
+                    return;
+                }
+
+                win.forEach(function(solution) {
+                    if ((used[solution[0]] === human && used[solution[1]] === human && used[solution[2]] == empty) ||
+                        (used[solution[0]] === human && used[solution[1]] === empty && used[solution[2]] == human) ||
+                        (used[solution[0]] === empty && used[solution[1]] === human && used[solution[2]] == human)) {
+
+                        solution.forEach(function(pos) {
+                            if (used[pos] === empty && theMove === null) {
+                                theMove = pos; // Set the move to block the human player
+                            }
+                        });
+                        move(); // Execute the blocking move
+                    }
+                });
+            }
+
+            // Function to create a fork opportunity
+            function fork() {
+                win.forEach(function(solution) {
+                    if ((used[solution[0]] === ai && used[solution[1]] === empty && used[solution[2]] == empty) ||
+                        (used[solution[0]] === empty && used[solution[1]] === empty && used[solution[2]] === ai) ||
+                        (used[solution[0]] === empty && used[solution[1]] === ai && used[solution[2]] == empty)) {
+
+                        if (used[4] === ai &&
+                            (([used[0] === human] && used[8] === human) || ([used[2] === human] && used[6] === human))) {
+                            side.forEach(function(pos) {
+                                if (used[pos] === empty && theMove === null) {
+                                    theMove = pos; // Set the move to create a fork
+                                }
+                            });
+                        } else {
+                            corner.forEach(function(pos) {
+                                if (used[pos] === empty && theMove === null) {
+                                    theMove = pos; // Set the move to occupy a corner
+                                }
+                            });
+                        }
+                        move(); // Execute the move
+                    }
+                });
+            }
+
+            // Function to block the human player's fork opportunity
+            function blockFork() {
+                if (moveCounter > 1 && used[4] !== empty && theMove === null) {
+                    emptySide(); // Try to occupy an empty side
+                    return;
+                }
+
+                win.forEach(function(solution) {
+                    if ((used[solution[0]] === human && used[solution[1]] === empty && used[solution[2]] == empty) ||
+                        (used[solution[0]] === empty && used[solution[1]] === empty && used[solution[2]] === human) ||
+                        (used[solution[0]] === empty && used[solution[1]] === human && used[solution[2]] == empty)) {
+
+                        side.forEach(function(pos) {
+                            if (used[pos] === empty && theMove === null) {
+                                theMove = pos; // Set the move to block the fork
+                            }
+                        });
+                        move(); // Execute the move
+                    }
+                });
+            }
+
+            // Function to play the center square
+            function playCenter() {
+                if (used[4] === empty && theMove === null) {
+                    theMove = 4; // Set the move to the center
+                    move(); // Execute the move
+                }
+            }
+
+            // Function to occupy the opposite corner
+            function oppositeCorner() {
+                if (used[0] === human && used[8] === empty && theMove === null) {
+                    theMove = 8; // Set the move to bottom-right corner
+                    move(); // Execute the move
+                } else if (used[0] === empty && used[8] === human && theMove === null) {
+                    theMove = 0; // Set the move to top-left corner
+                    move(); // Execute the move
+                } else if (used[2] === human && used[6] === empty && theMove === null) {
+                    theMove = 6; // Set the move to bottom-left corner
+                    move(); // Execute the move
+                } else if (used[2] === empty && used[6] === human && theMove === null) {
+                    theMove = 2; // Set the move to top-right corner
+                    move(); // Execute the move
+                }
+            }
+
+            // Function to occupy an empty corner
+            function emptyCorner() {
+                corner.forEach(function(pos) {
+                    if (used[pos] === empty && theMove === null) {
+                        theMove = pos; // Set the move to an empty corner
+                        move(); // Execute the move
+                    }
+                });
+            }
+
+            // Function to occupy an empty side
+            function emptySide() {
+                side.forEach(function(pos) {
+                    if (used[pos] === empty && theMove === null) {
+                        theMove = pos; // Set the move to an empty side
+                        move(); // Execute the move
+                    }
+                });
+            }
+
+            // Based on Wikipedia solution
+            // https://en.wikipedia.org/wiki/Tic-tac-toe
+
+            // 0. Opening move
+            if (theMove === null && moveCounter === 0) {
+                opening(); // Execute opening strategy
+            }
+
+            // 1. Win
+            if (theMove === null) {
+                aWin(); // Check for winning move
+            }
+
+            // 2. Block
+            if (theMove === null) {
+                block(); // Check for blocking move
+            }
+
+            // 3. Fork
+            if (theMove === null) {
+                fork(); // Check for fork opportunity
+            }
+
+            // 4. Block Fork
+            if (theMove === null) {
+                blockFork(); // Check for blocking fork opportunity
+            }
+
+            // 5. Center
+            if (theMove === null) {
+                playCenter(); // Try to occupy the center
+            }
+
+            // 6. Opposite corner
+            if (theMove === null) {
+                oppositeCorner(); // Try to occupy the opposite corner
+            }
+
+            // 7. Empty corner
+            if (theMove === null) {
+                emptyCorner(); // Try to occupy an empty corner
+            }
+
+            // 8. Empty side
+            if (theMove === null) {
+                emptySide(); // Try to occupy an empty side
+            }
+        }
+
+        // Function to draw the player's move on the board
+        function drawMove(location, who, delay) {
+            setTimeout(function() {
+                $('#' + (location.x * 3 + location.y)).html("<span class='who valign center-align animated fadeIn'>" + who + "</span>");
+            }, delay); // Delay the drawing of the move for animation
+        }
+
+        // Function to check the game status after each move
+        function checkStatus() {
+            var min = Math.min.apply(null, board.reduce(function(a, b) {
+                return a.concat(b);
+            }, [])); // Find the minimum value in the board
+
+            [ai, human].forEach(function(player) {
+                win.forEach(function(solution) {
+                    var check = 0; // Counter for matching tokens
+                    solution.forEach(function(pos) {
+                        if (board[parseInt(pos / 3)][pos % 3] === player) {
+                            check++; // Increment counter for matching tokens
+                        }
+                    });
+                    if (check === 3) { // Check if there are three matching tokens
+                        if (player === ai) {
+                            outcome = score_AI; // Set outcome for AI win
+                            gameOver = true; // Set game over flag
+                            how = solution; // Store winning solution
+                            score[score_AI]++; // Increment AI score
+                        } else {
+                            outcome = score_HUMAN; // Set outcome for human win
+                            gameOver = true; // Set game over flag
+                            how = solution; // Store winning solution
+                            score[score_HUMAN]++; // Increment human score
+                        }
+                    }
+                });
+            });
+
+            // If no moves left to make it's a draw
+            if (min !== 0 && !gameOver) {
+                hasMoved = true; // Set move flag to true
+                gameOver = true; // Set game over flag
+                outcome = score_TIE; // Set outcome for tie
+                score[score_TIE]++; // Increment tie score
+                return;
+            }
+        }
+
+        // Function to highlight winning squares
+        function showWin() {
+            console.log(gameOver, outcome, how); // Log game status
+            how.forEach(function(v) {
+                $('#' + v).css('background-color', 'rgba(0,0,0,0.2)'); // Highlight winning squares
+            });
+        }
+
+        // Function to update the score display
+        function updateScore() {
+            score.forEach(function(count, i) {
+                $('#score' + i).text(count); // Update score display for each player
+            });
+
+            $('#score' + outcome).addClass('animated flash'); // Flash the score of the winning player
+            $('#score' + outcome).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+                $('#score' + outcome).removeClass('animated flash'); // Remove flash effect after animation ends
+            });
+        }
+
+        // Function to control the game flow
+        function control() {
+            if (aiPlayer === X_token && moveCounter === 0) {
+                hasMoved = false; // Reset move flag
+                moveAI_Wiki(); // AI makes the first move
+                checkStatus(); // Check game status
+            }
+
+            // Event listener for square clicks
+            $('#board').on('click', '.square', (function() {
+                hasMoved = false; // Reset move flag
+
+                if (!hasMoved && !gameOver) { // If no move has been made and the game is not over
+                    move.x = parseInt($(this).attr('id') / 3); // Get x coordinate from clicked square
+                    move.y = $(this).attr('id') % 3; // Get y coordinate from clicked square
+                    moveHUMAN(move); // Human makes a move
+                    checkStatus(); // Check game status
+                }
+
+                if (hasMoved && !gameOver) { // If a move has been made and the game is not over
+                    hasMoved = false; // Reset move flag
+                    //moveAI_Rnd(); // Uncomment for random AI move
+                    moveAI_Wiki(); // AI makes a move
+                    checkStatus(); // Check game status
+                }
+
+                if (hasMoved && gameOver) { // If a move has been made and the game is over
+                    showWin(); // Show winning squares
+                    updateScore(); // Update score display
+                }
+            }));
+        }
+
+        // Event listener for player selection
+        $('#X').click(function() {
+            humanPlayer = X_token; // Set human player to X
+            aiPlayer = O_token; // Set AI player to O
+            $('#chooseModal').closeModal(); // Close the player selection modal
+            control(); // Start the game control
+        });
+
+        $('#O').click(function() {
+            humanPlayer = O_token; // Set human player to O
+            aiPlayer = X_token; // Set AI player to X
+            $('#chooseModal').closeModal(); // Close the player selection modal
+            control(); // Start the game control
+        });
+
+        // Event listener for new game button
+        $('#new-game').click(function() {
+            setNewGame(); // Reset the game
+            control(); // Start the game control
+        });
+
+        $(".button-collapse").sideNav(); // Initialize side navigation
+
+        setNewGame(); // Set up a new game
+        $('#chooseModal').openModal(); // Open the player selection modal
+    });
+  </script>
+</body>
+</html>
