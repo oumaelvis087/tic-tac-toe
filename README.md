@@ -22,7 +22,7 @@ A modern, responsive Tic-Tac-Toe game with an AI opponent, built using HTML, CSS
 
 ## How to Play
 
-1. Visit the game website
+1. Visit the [game website](https://tictactoebest.netlify.app/)
 2. Choose whether you want to play as X or O
 3. Make your move by clicking on any empty square
 4. Try to get three in a row while blocking the AI
